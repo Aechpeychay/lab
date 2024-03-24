@@ -1,0 +1,40 @@
+function [x]=f(x0)
+    x = x0*x0+8*exp(0.55*x0)
+endfunction
+
+function[x]=mid(a,b)
+    x = (a+b)/2
+endfunction
+
+a = -2
+b = 0
+delta = 0.001
+error_delta = 1
+n = 0;
+while(error_delta >= delta)
+    n = n + 1
+    [x0] = mid(a,b)
+    l = b - a
+    x1 = a + l/4
+    x2 = b - l/4
+    disp("a = ", a)
+    disp("x0 = ", x0)
+    disp("b = ", b)
+    if(f(x1)<f(x0)) then
+        b = x0
+        [x1] = mid(a,x0)
+        x0 = x1
+     elseif(f(x1)>=f(x0)) then
+             if(f(x2)<f(x0)) then 
+                 a = x0
+                 [x2] = mid(x0,b)
+                 x0 = x2
+             elseif(f(x2)>=f(x0)) then 
+                     a = x1
+                     b = x2
+                     x0 = mid(x1,x2)
+             end
+     end
+     error_delta = l/2
+end
+disp(n)
