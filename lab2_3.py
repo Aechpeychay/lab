@@ -50,6 +50,6 @@ for e in range(4):
     best_point = nelder_mead(f, initial_simplex, eps)
     for i in best_point:
         print(format(i, '.16f'))
-    print(format(f(best_point), '.35f'))
+    print(format(f(best_point), '.50f'))
     print (eps, '\n')
     eps /= 100
