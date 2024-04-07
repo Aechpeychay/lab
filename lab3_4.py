@@ -7,11 +7,11 @@ def f(x):
     return pow((x[0] - x[1]), 2) + 4 * pow((x[2] - x[3]), 2) + pow((x[1] - 6 * x[2]), 4) + 2 * pow((x[0] - x[3]), 2)
 
 def grad_f(x):
-    dfdx0 = 6 * (x[0] - x[1]) + 8 * (x[0] - x[3])
-    dfdx1 = -6 * (x[0] - x[1]) + 4 * (x[1] + 26 * x[2]) ** 3
-    dfdx2 = 2 * (x[2] - x[3]) + 4 * 26 * (x[1] + 26 * x[2]) ** 3
-    dfdx3 = -2 * (x[2] - x[3]) - 8 * (x[0] - x[3])
-    return np.array([dfdx0, dfdx1, dfdx2, dfdx3])
+	df_dx0 = 2 * (x[0] - x[1]) + 4 * (x[0] - x[3])
+	df_dx1 = -2 * (x[0] - x[1]) + 4 * (x[1] - 6*x[2])**3
+	df_dx2 = 8 * (x[2] - x[3]) - 24 * (x[1]-6*x[2])**3
+	df_dx3 = -8 * (x[2] - x[3]) - 4 * (x[0] - x[3])
+	return np.array([df_dx0, df_dx1, df_dx2, df_dx3])
 
 def line_search(f, xk, dk):
     alpha_low = 0
