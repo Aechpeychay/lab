@@ -15,7 +15,7 @@ def grad_f(x):
         -8*x[0] - 2*x[2] + 10*x[3]
     ])
 
-def dfp_corrected(f, grad_f, x0, eps, max_iter=100):
+def bfgs(f, grad_f, x0, eps, max_iter=1000):
     x = np.array(x0, dtype=float)
     H = np.eye(len(x0))
     for i in range(max_iter):
@@ -26,23 +26,24 @@ def dfp_corrected(f, grad_f, x0, eps, max_iter=100):
         p = -H.dot(grad)
         def objective(alpha):
             return f(x + alpha * p)
-        res = minimize_scalar(objective, method='golden')
-        alpha = res.x
+        alpha = 1
+        while f(x + alpha * p) > f(x) - alpha * 0.0001 * np.dot(grad, p):
+            alpha *= 0.5
         x_new = x + alpha * p
-        delta_x = x_new - x
-        delta_grad = grad_f(x_new) - grad
-        dg = delta_grad.reshape(-1, 1)
-        dx = delta_x.reshape(-1, 1)
-        Hdg = H.dot(dg)
-        H = H + (dx @ dx.T) / (dx.T @ dg) - (Hdg @ Hdg.T) / (dg.T @ Hdg)
+        s = x_new - x
+        y = grad_f(x_new) - grad
+        rho = 1.0 / (y.dot(s))
+        I = np.eye(len(x0))
+        H = (I - rho * s[:, np.newaxis] @ y[np.newaxis, :]) @ H @ (
+                    I - rho * y[:, np.newaxis] @ s[np.newaxis, :]) + rho * s[:, np.newaxis] @ s[np.newaxis, :]
         x = x_new
     return x
 
 for e in range(4):
     x0 = [1.0, 1.0, 1.0, 1.0]
-    x_opt = dfp_corrected(f, grad_f, x0, eps)
+    x_opt = bfgs(f, grad_f, x0, eps)
     for i in x_opt:
-        print(format(i, '.10f'))
+        print(format(abs(i), '.16f'))
     print(format(f(x_opt), '.20f'))
     print (eps, '\n')
     eps /= 100
