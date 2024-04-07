@@ -2,7 +2,7 @@ import numdifftools as nd
 import numpy as np
 
 n = 4
-eps = 0.001
+eps = 0.01
 a = 0.00001
 
 def f(x):

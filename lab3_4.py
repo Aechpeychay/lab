@@ -1,7 +1,7 @@
 import numpy as np
 import numdifftools as nd
 
-eps = 0.001
+eps = 0.01
 
 def f(x):
     return pow((x[0] - x[1]), 2) + 4 * pow((x[2] - x[3]), 2) + pow((x[1] - 6 * x[2]), 4) + 2 * pow((x[0] - x[3]), 2)
