@@ -19,6 +19,7 @@ for e in range(4):
     x = np.array([0.01, 0.01, 0.01, 0.01])
 
     for i in range(1, 100):
+	k+=1
         x_pr = x.copy()
         grad = np.array(nd.Gradient(f)(x))
         a_grad = np.linalg.norm(grad)
